@@ -19,36 +19,42 @@ $app = new \Slim\App();
  * is an anonymous function.
  */
 
-// GET route
+$app->get('/','getEmployee');
+$app->get('/index/:id','getEmployeeDetail');
 
+function getEmployee() {
+    $sql = "select * FROM employee";
+    try {
+        $db = getConnection();
+        $stmt = $db->query($sql);
+        $wines = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $db = null;
+        echo '{"data": ' . json_encode($wines) . '}';
+    } catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+}
 
-// POST route
-// $app->post(
-//     '/post',
-//     function () {
-//         echo 'This is a POST route';
-//     }
-// );
+function getEmployeeDetail($id) {
+    $sql = "select * FROM employee where id=".$id;
+    try {
+        $db = getConnection();
+        $stmt = $db->query($sql);
+        $wines = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $db = null;
+        echo '{"data": ' . json_encode($wines) . '}';
+    } catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+}
 
-// PUT route
-// $app->put(
-//     '/put',
-//     function () {
-//         echo 'This is a PUT route';
-//     }
-// );
-
-// PATCH route
-// $app->patch('/patch', function () {
-//     echo 'This is a PATCH route';
-// });
-
-// DELETE route
-// $app->delete(
-//     '/delete',
-//     function () {
-//         echo 'This is a DELETE route';
-//     }
-// );
-
+function getConnection() {
+    $dbhost="localhost";
+    $dbuser="root";
+    $dbpass="";
+    $dbname="2015_slim_employee";
+    $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    return $dbh;
+}
 $app->run();
