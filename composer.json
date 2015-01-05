@@ -18,7 +18,8 @@
         "guzzlehttp/streams": "1.*",
         "slim/slim": "*.*",
         "slim/extras": "*.*",
-        "twig/twig": "*.*"
+        "twig/twig": "*.*",
+        "wixel/gump": "dev-master"
     },
     "require-dev": {
         "mockery/mockery": "dev-master@dev",
